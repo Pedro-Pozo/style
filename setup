@@ -1,0 +1,12 @@
+#!usr/bin/bash
+chmod +x *
+mv  style /data/data/com.termux/files/usr/bin
+cd 
+mkdir .termux||echo "uwu"
+mv  /data/data/com.termux/files/HOME/style/fonts /data/data/com.termux/files/home/.termux
+
+
+echo "Para ejecutar style escriba 
+
+style -h
+"

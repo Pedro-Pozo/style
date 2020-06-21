@@ -1,0 +1,130 @@
+#Autor:Marthel Pedro Pozo Soliz
+#Correo: ppozosoliz@gmail.com
+#twitter: Pedrooo_ctm
+
+#variables
+nnn="\e[0m"
+red='\e[0;31m' # Red
+grn='\e[0;32m' # Green
+ylw='\e[0;33m' # Yellow
+blu='\e[0;34m' # Blue
+pur='\e[0;35m' # Purple
+cyn='\e[0;36m' # Cyan
+wht='\e[0;37m' # White
+
+tecl="/data/data/com.termux/files/home/.termux/termux.properties"
+fonts="/data/data/com.termux/files/home/.termux/fonts"
+list1="/data/data/com.termux/files/home/.termux/fonts"
+list="ls /data/data/com.termux/files/home/.termux/fonts"
+#Setup
+
+
+
+if [[ ! -e $home/.termux/fonts ]] ; then
+cd
+cd .termux/fonts
+else
+echo -e "$ylw # # # # # # # # # # # # # # "
+echo -e "$red Por favor ejecuta setup.sh $nnn"
+echo -e "$ylw # # # # # # # # # # # # # #$nnn "
+exit 1
+fi
+
+#parametros
+case "$1" in
+#fuenteexterna
+ -d|--download)
+ echo "Descarga fuentes y muevelas a .termux/fonts"
+ termux-open-url https://fonts.google.com
+exit 1
+shift
+;;
+
+
+ -f|--font)
+ ttf="$2"
+if [[ ! -e $ttf ]] ; then
+cat $ttf >/data/data/com.termux/files/home/.termux/font.ttf
+    termux-reload-settings
+exit 1
+else
+echo -e "$red Ruta invalida o archivo inexistente $nnn"
+exit 1
+fi
+shift
+;;
+#listayelige
+
+
+
+ -l|--list)
+ cd $list1
+ echo -e "$ylw Fuentes Disponibles$nnn"
+ $list
+ echo -e "$ylw Elije una, deja en blanco para volver a la normal :$nnn"
+ read chfo
+ cat $chfo > /data/data/com.termux/files/home/.termux/font.ttf
+ termux-reload-settings
+exit 1
+shift
+;;
+
+
+
+
+ -t|--teclas)
+if [[ -e $tecl ]] ; then
+	echo -e "$ylw Ya tiene las teclas extra, desea editar? $red Si$ylw /$red No$nnn"
+	read  ET 
+	if (($ET=="Si")) ; then
+   echo "aun no disponible"
+	else 
+	 exit 1
+	fi
+else
+  cd
+  touch .termux/termux.properties
+  echo "extra-keys = [['ESC','/','-','HOME','UP','END','PGUP'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]">.termux/termux.properties
+echo -e "$ylw Teclas extra agregadas, Reinicie termux o inicie otra sesión$nnn"
+	exit
+fi
+
+exit 1
+shift
+;;
+
+ -c|--creditos)
+echo -e "$ylw Autor:$nnn Marthel Pedro Pozo Soliz"
+echo -e "$ylw Correo:$nnn ppozosoliz@gmail.com"
+echo -e "$ylw Twitter:$nnn Pedrooo_ctm"
+shift
+;;
+
+
+
+ -h|--help|*)
+ echo ""
+ echo -e "$grn Usage:$nnn"
+ echo ""
+ echo " -l | --list : ver las fuentes por defecto"
+ echo ""
+ echo " -f | --font : usar una fuente externa. Ejm: style -f /sdcard/font.ttf"
+ echo ""
+ echo " -d | --download : Abre el sitio de descargas de fuentes fonts.google.com"
+ echo ""
+ echo " -t | --teclas : Añade o edita las teclas extra"
+echo ""
+ echo " -c | --creditos : Muestra los creadores"
+ echo ""
+ echo " -h | --help : muestra este mensaje"
+ echo ""
+ echo -e "PARA INSTALAR FUENTES DESCARGALAS DE fonts.google.com Y MUEVELAS A $grn $home/.termux/fonts$nnn
+Ejm: mv /download/ejemplo.ttf '$home/.termux/fonts'
+"
+exit 1
+shift
+;;
+
+esac
+ shift
+#done
